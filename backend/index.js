@@ -5,6 +5,8 @@ require('dotenv').config();
 let mongodb = require('./Config/db')
 
 
+app.use(express.json())
+
 mongoose.promise = global.promise;
 mongoose.connect(mongodb.db).then(() => {
     console.log("database connected")
