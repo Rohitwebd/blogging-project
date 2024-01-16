@@ -11,11 +11,12 @@ const blogRoute = express.Router();
 //     })
 // })
 
-const {createBlog,getAllblog,deleteBlog} = require("../Controllers/blogController")
+const {createBlog,getAllblog,deleteBlog,getBlogbyId, updateBlog} = require("../Controllers/blogController")
 
 blogRoute.route("/create").post(createBlog)
 blogRoute.route("/getblog").get(getAllblog)
-blogRoute.route("/delete/").delete(deleteBlog)
+blogRoute.route("/blog/:id").delete(deleteBlog).get(getBlogbyId).patch(updateBlog)
+
 
 
 module.exports = blogRoute
