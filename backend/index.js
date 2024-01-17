@@ -3,9 +3,11 @@ const mongoose = require('mongoose')
 const app = express();
 require('dotenv').config();
 let mongodb = require('./Config/db')
+const cookieParser = require("cookie-parser")
 
 
 app.use(express.json())
+app.use(cookieParser())
 
 mongoose.promise = global.promise;
 mongoose.connect(mongodb.db).then(() => {
@@ -16,7 +18,7 @@ mongoose.connect(mongodb.db).then(() => {
 
 
 const blogRoute = require('./Routes/blog.routes')
-app.use('/api/blog',blogRoute)
+app.use('/api/blog', blogRoute)
 
 
 const port = process.env.PORT || 8000

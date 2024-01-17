@@ -1,6 +1,6 @@
 const blogModel = require("../Models/Blog")
 
-// ====================new blog create===============
+// ==================== new blog create ===============
 
 exports.createBlog = async (req, res) => {
     const blogs = await blogModel.create(req.body)
@@ -10,7 +10,7 @@ exports.createBlog = async (req, res) => {
     })
 }
 
-//==================== blog get ===============
+//==================== All blog data get ===============
 
 exports.getAllblog = async (req, res) => {
     const blogs = await blogModel.find()
@@ -56,7 +56,7 @@ exports.getBlogbyId = async (req, res) => {
     })
 }
 
-// ========================= blog update ====================
+// ========================= blog update by id ====================
 
 exports.updateBlog = async (req, res) => {
     let blog = await blogModel.findById(req.params.id)
@@ -66,11 +66,11 @@ exports.updateBlog = async (req, res) => {
             massage: "blog not found",
         })
     }
-    blog = await blogModel.findByIdAndUpdate(req.params.id, req.body , {
+    blog = await blogModel.findByIdAndUpdate(req.params.id, req.body, {
         upsert: true
     })
     res.status(200).json({
         success: true,
         massage: "Blog update successfully"
     })
-    }
+}
