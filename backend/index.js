@@ -21,8 +21,11 @@ mongoose.connect(mongodb.db).then(() => {
 
 const blogRoute = require('./Routes/blog.routes')
 const authRoute = require('./Routes/auth.routes')
+const profileRoute = require ('./Routes/profile.routes')
+
 app.use('/api/blog', blogRoute)
 app.use('/api/auth',authRoute)
+app.use('/api/user',profileRoute)
 
 // ================= server create ==================
 
