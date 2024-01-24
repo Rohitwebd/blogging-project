@@ -13,11 +13,11 @@ const blogRoute = express.Router();
 
 
 const { createBlog, getAllblog, deleteBlog, getBlogbyId, updateBlog } = require("../Controllers/blogController")
-const{userAuth} = require ("../Middleware/auth")
+const { userAuth } = require("../Middleware/auth")
 
-blogRoute.route("/create").post(userAuth,createBlog)
+blogRoute.route("/create").post(userAuth, createBlog)
 blogRoute.route("/getblog").get(getAllblog)
-blogRoute.route("/blog/:id").delete(userAuth,deleteBlog).get(getBlogbyId).patch(userAuth,updateBlog)
+blogRoute.route("/blog/:id").delete(userAuth, deleteBlog).get(getBlogbyId).patch(userAuth, updateBlog)
 
 
 
