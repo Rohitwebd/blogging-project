@@ -24,20 +24,13 @@ exports.getProfileInfo = async (req, res) => {
 
 exports.updateProfile = async (req, res, next) => {
     // let profile = await profileModel.findById(req.params.id);
-    let profile = await profileModel.find({ userId: req.params.id }).populate("userId")
+    // let profile = await profileModel.find({ userId: req.params.id }).populate("userId")
 
 
-    if (!profile) {
-        profile = await profileModel.create(req.body);
-        // return next(new ErrorHandler("Blog not found",404))
-        return res.status(200).json({
-            success: true,
-            message: "Profile updated successfully"
-        })
-
-
-    }
-    profile = await profileModel.updateOne({ userId: req.body.userId }, req.body);
+   const profile = await profileModel.updateOne({ userId: req.body.userId }, req.body,{
+       new : true,
+       upsert : true
+    });
     res.status(200).json({
         success: true,
         profile,
@@ -85,7 +78,47 @@ exports.changePassword = async (req, res, next) => {
     }
 };
 
+// ==================== email varify ==================
 
+exports.emailVerify = async (req, res) => {
+    try {
+      const getUser = await User.findOne({ _id: req.query.id });
+      if (!getUser) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found"
+        })
+      } else {
+        if (getUser.status == 0) {
+          return res.status(400).json({
+            success: false,
+            message: "Email already verified"
+          })
+        } else {
+          await User.updateOne({ _id: req?.query?.id }, {
+            status: 0
+          })
+            .then((user) => {
+              return res.status(200).json({
+                message: "Congratulations ! Email varified Successfully"
+              });
+            })
+            .catch((error) => {
+              return res.status(400).json({
+                message: "verification error",
+                error: error.message,
+              })
+            });
+        }
+      }
+    } catch (error) {
+      return res.status(400).json({
+        message: "verification error",
+        error: error.message,
+      })
+    }
+  }
+  
 // ============= logout ==============
 
 exports.logout = async (req, res) => {

@@ -1,6 +1,7 @@
 const User = require("../Models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mailer = require("../Helpers/mailer")
 
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -17,18 +18,8 @@ exports.register = async (req, res, next) => {
       password: hash
     })
       .then((user) => {
-        // const maxAge = 3 * 60 * 60;
-        // const token = jwt.sign(
-        //   { id: user._id, user: user.firstname},
-        //   jwtSecret,
-        //   {
-        //     expiresIn: maxAge, // 3hrs
-        //   }
-        // );
-        // res.cookie("jwt", token, {
-        //   httpOnly: true,
-        //   maxAge: maxAge * 1000,
-        // });
+        const msg = `Hi, ${firstname} Please verify your email <a href="http://localhost:7000/api/user/verify?id=${user._id}">Verify</a>`
+        mailer.sendMail(email, "Mail verfication", msg)
         res.status(201).json({
           message: "User successfully created",
           user: user
@@ -62,33 +53,38 @@ exports.login = async (req, res, next) => {
 
     if (!user) {
       res.status(400).json({
-        message: "Login not successful",
+        message: "please enter valid email",
         error: "User not found",
       });
     } else {
       // comparing given password with hashed password
       bcrypt.compare(password, user.password).then(function (result) {
         if (result) {
-          const maxAge = 3 * 60 * 60;
-          const token = jwt.sign(
-            { id: user._id, email },
-            jwtSecret,
-            {
-              expiresIn: maxAge, // 3hrs in sec
-            }
-          );
-          res.cookie("jwt", token, {
-            httpOnly: true,
-            maxAge: maxAge * 1000, // 3hrs in ms
-          });
-          res.status(201).json({
-            message: "User successfully Logged in",
-            user: user._id,
-            role: user.role,
-          });
+          if (user.status === 0) {
+            const maxAge = 3 * 60 * 60;
+            const token = jwt.sign(
+              { id: user._id, email },
+              jwtSecret,
+              {
+                expiresIn: maxAge, // 3hrs in sec
+              }
+            );
+            res.cookie("jwt", token, {
+              httpOnly: true,
+              maxAge: maxAge * 1000, // 3hrs in ms
+            });
+            res.status(201).json({
+              message: "User successfully Logged in",
+              user: user._id,
+              role: user.role,
+            });
+          } else {
+            res.status(400).json({ message: "Please verify your email" });
+          }
         } else {
-          res.status(400).json({ message: "Login not succesful" });
+          res.status(400).json({ message: "please enter currect password" });
         }
+
       });
     }
   } catch (error) {
