@@ -3,10 +3,19 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mailer = require("../Helpers/mailer")
 
-
 const jwtSecret = process.env.JWT_SECRET;
+
 exports.register = async (req, res, next) => {
   const { firstname, surname, email, password } = req.body;
+
+  const user = await User.findOne({ email })
+  if (user) {
+    return res.status(400).json({
+      status: false,
+      massage: "Email is already exists"
+    })
+  }
+
   if (password.length < 6) {
     return res.status(400).json({ message: "Password less than 6 characters" });
   }
@@ -44,7 +53,7 @@ exports.login = async (req, res, next) => {
   // Check if email and password is provided
   if (!email || !password) {
     return res.status(400).json({
-      message: "email or Password not present",
+      message: "Email or Password not present",
     });
   }
 
@@ -53,7 +62,7 @@ exports.login = async (req, res, next) => {
 
     if (!user) {
       res.status(400).json({
-        message: "please enter valid email",
+        message: "Please enter valid email",
         error: "User not found",
       });
     } else {
@@ -82,7 +91,7 @@ exports.login = async (req, res, next) => {
             res.status(400).json({ message: "Please verify your email" });
           }
         } else {
-          res.status(400).json({ message: "please enter currect password" });
+          res.status(400).json({ message: "Please enter currect password" });
         }
 
       });
