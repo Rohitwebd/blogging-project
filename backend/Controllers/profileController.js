@@ -174,3 +174,27 @@ exports.forgotPassword = async (req, res) => {
   }
 }
 
+// ================== Reset password ==================
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const token = req.query.token;
+    const getToken = await PasswordReset.findOne({ token });
+    if (!getToken) {
+      return res.status(404).json({
+        success: false,
+        message: "Token not found"
+      })
+    } else {
+      return res.status(200).json({
+        status: true,
+        userId: getToken.userId
+      })
+    }
+  } catch (error) {
+    return res.status(400).json({
+      message: "Reset password error",
+      error: error.message,
+    })
+  }
+}
