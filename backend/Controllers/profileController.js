@@ -198,3 +198,52 @@ exports.resetPassword = async (req, res) => {
     })
   }
 }
+
+// =================== Update password =====================
+
+exports.updatePassword = async (req, res) => {
+  try {
+    const { userId, newPassword, confirmPassword } = req.body;
+    if (!userId) {
+      return res.status(404).json({
+        success: false,
+        message: "userId not found"
+      })
+    }
+    const getUser = await User.findOne({ _id: userId });
+    if (!getUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      })
+    }
+    if (newPassword !== confirmPassword) {
+      return res.status(404).json({
+        success: false,
+        message: "password && confirmPassword donot match"
+      })
+    }
+    bcrypt.hash(confirmPassword, 10).then(async (hash) => {
+      await User.updateOne({ _id: userId }, {
+        password: hash
+      })
+        .then((user) => {
+          res.status(200).json({
+            message: "Password reset Successfully",
+            user: userId
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            message: "error in password changed",
+            error: error.message,
+          })
+        });
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Update password error",
+      error: error.message,
+    })
+  }
+}
