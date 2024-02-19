@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express();
+const cors = require("cors")
 let mongodb = require('./Config/db')
 const cookieParser = require("cookie-parser")
 
@@ -18,6 +19,7 @@ mongoose.connect(mongodb.db).then(() => {
     console.log(`database error ${err}`)
 })
 
+app.use(cors())
 
 const blogRoute = require('./Routes/blog.routes')
 const authRoute = require('./Routes/auth.routes')
