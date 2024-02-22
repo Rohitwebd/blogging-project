@@ -7,6 +7,9 @@ const Blog = new Schema({
     blogDescription: {
         type: String
     },
+    categery:{
+type:String
+    },
     autherId: {
         type: String
     },

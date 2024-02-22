@@ -23,11 +23,16 @@ app.use(cors())
 
 const blogRoute = require('./Routes/blog.routes')
 const authRoute = require('./Routes/auth.routes')
-const profileRoute = require('./Routes/profile.routes')
+const profileRoute = require('./Routes/profile.routes');
+const newsRoute = require('./Routes/news.routes');
+const contactRoute = require('./Routes/contact.routes');
+
 
 app.use('/api/blog', blogRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/user', profileRoute)
+app.use('/api/newsletter',newsRoute)
+app.use('/api/contact',contactRoute)
 
 // ================= server create ==================
 
