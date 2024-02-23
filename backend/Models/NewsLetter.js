@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const Newsletter = new Schema({
-    Email: {
+    email: {
         type: String
     },
-    Status:{
+    status:{
         type:Number,
         default:1
     },
-    CreatedDate:{
+    createdDate:{
         type:Date,
         default:Date.now
     }

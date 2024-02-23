@@ -4,10 +4,10 @@ const ContactModle = require("../Models/Contact")
 
 exports.createContact = async (req, res) => {
     try{
-    const news = await ContactModle.create(req.body)
+    const contact = await ContactModle.create(req.body)
     res.status(201).json({
         success: true,
-        massage: "contact create successfully"
+        massage: "Contact create successfully"
     })
 }catch (error) {
     res.status(400).json({
