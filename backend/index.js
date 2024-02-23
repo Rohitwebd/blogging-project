@@ -28,11 +28,13 @@ const newsRoute = require('./Routes/news.routes');
 const contactRoute = require('./Routes/contact.routes');
 
 
+
 app.use('/api/blog', blogRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/user', profileRoute)
 app.use('/api/newsletter',newsRoute)
 app.use('/api/contact',contactRoute)
+
 
 // ================= server create ==================
 

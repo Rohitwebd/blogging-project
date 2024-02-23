@@ -7,14 +7,15 @@ const Blog = new Schema({
     blogDescription: {
         type: String
     },
-    categery:{
-type:String
+    category: {
+        type: String
     },
     autherId: {
         type: String
     },
     createdDate: {
-        type: String
+        type: Date,
+        default:Date.now
     },
 })
 module.exports = mongoose.model('blog', Blog)
