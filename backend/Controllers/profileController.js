@@ -150,7 +150,7 @@ exports.forgotPassword = async (req, res) => {
         userId: getUser._id,
         token: randomString
       })
-        .then((user) => {
+        .then((getUser) => {
           const msg = `Hi, ${getUser.firstname} Please click to reset your password <a href="http://localhost:7000/api/user/reset-password?token=${randomString}">Reset Password</a>`
           mailer.sendMail(email, "Reset password", msg)
           return res.status(200).json({

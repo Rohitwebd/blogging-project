@@ -82,7 +82,7 @@ exports.login = async (req, res, next) => {
               httpOnly: true,
               maxAge: maxAge * 1000, // 3hrs in ms
             });
-            res.status(201).json({
+            res.status(200).json({
               message: "User successfully Logged in",
               user: user._id,
               role: user.role,

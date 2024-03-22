@@ -129,7 +129,7 @@ exports.getBlogsBySerch = async (req, res) => {
             {
                 // "blogTitle": { $regex: req.query.q }
 
-                "$and": [
+                "$or": [
                     { "blogTitle": { $regex: req.query.q } },
                     { "blogDescription": { $regex: req.query.q } }
                 ]
